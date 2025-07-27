@@ -1036,3 +1036,149 @@ app.post('/sendPic', upload.array('images', 10), async (req, res) => {
         }
     });
 ```
+# authentication using passport
+> login passport.authenticate -> passport session -> localstragtey serialize -> deserialize then in ejs succesredirecta or failure reidriect while in react react.logIn 
+```
+import { useState } from "react"
+export default function App() {
+  const [form, setForm] = useState({ un: '', pd: '' })
+  const handlechange = (e) => {
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
+  }
+  const submit = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await fetch('http://localhost:2030/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(form),
+         credentials: 'include'  // it is must to store session in cookies
+      })
+      if (res.ok) {
+        const login = await res.json()
+        console.log(login)
+      }
+
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  return (<>
+
+    <form onSubmit={submit} >
+      <input type="text" name='un' placeholder="enter your name" onChange={handlechange} />
+      <input type="password" name="pd" placeholder="enter your password" onChange={handlechange} />
+      <button>submit</button>
+    </form>
+
+
+  </>)
+}
+```
+```
+const user = { name: 'a', password: '2' };
+const express = require('express');
+const session = require('express-session');
+const passport = require('passport');
+const ls = require('passport-local').Strategy;
+const cors=require('cors')
+const app = express();
+
+app.use(express.json())
+app.use(cors({
+  origin: 'http://localhost:5173', // or wherever your React app runs
+  credentials: true// // it is must to store session in cookies
+}));
+
+
+// Middleware to parse application/x-www-form-urlencoded
+app.use(express.urlencoded());
+
+// Session setup
+app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    secret: 'abhiyumi',
+    cookie: {
+        maxAge: 1000 * 60,
+        secure: false // set to true if using HTTPS
+    }
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Passport local strategy
+passport.use(new ls(
+    { usernameField: 'un', passwordField: 'pd' },
+    (usernamfe, passworfd, done) => {
+        console.log('Authenticating:', usernamfe, passworfd);
+        if (usernamfe === user.name && passworfd === user.password) {
+            console.log('✅ Authentication successful');
+            return done(null, user);
+        }
+        console.log('❌ Authentication failed');
+        return done(null, false, { message: 'Invalid credentials' });
+    }
+));
+
+// Serialize user
+passport.serializeUser((user, done) => {
+    console.log('Serializing user:', user.name);
+    done(null, user.name);
+});
+
+// Deserialize user
+passport.deserializeUser((id, done) => {
+    console.log('Deserializing user:', id);
+    if (id === user.name) {
+        done(null, user);
+    } else {
+        done(null, false);
+    }
+});
+// ✅ Custom middleware to protect routes
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  return res.status(401).json({ error: 'Not authenticated' });
+}
+// ✅ Protected Route
+app.get('/profile', isLoggedIn, (req, res) => {
+  res.json({ user: req.user });
+});
+// ✅ Logout Route
+app.get('/logout', (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.json({ logout: true });
+  });
+});
+// Handle login POST with error messages for reacy
+app.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.json({ login: false }); // 👈 on invalid credentials
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      return res.json({ login: true }); // 👈 on success
+    });
+  })(req, res, next); //to invoke paasport.authenticate middkeware we use it
+});
+// 🟢 Login POST with successRedirect/failureRedirect for ejs
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/profile',
+  failureRedirect: '/login'
+}));
+
+app.listen(2030, () => {
+    console.log(`🚀 Server running at http://localhost:2030`);
+});
+
+```
