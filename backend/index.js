@@ -1,7 +1,7 @@
 
 // setting env file
 require('dotenv').config({ path: './.env' })
-require('./utils/passport-config');
+
 
 const express = require('express')
 const cors = require('cors')
@@ -12,7 +12,6 @@ const mongoose = require('./config/DB')
 const session = require('express-session');
 const manageGallery=require('./controllers/manageGallery')
 const manageProject=require('./controllers/manageProject')
-const admin=require('./controllers/admin')
 //schema
 
 
@@ -44,7 +43,7 @@ app.use(session({
 app.use('/mail', mail)
 app.use('/manage-gallery',manageGallery)
 app.use('/manage-project',manageProject)
-app.use('/login-admin',admin)
+
 
 
 //route
