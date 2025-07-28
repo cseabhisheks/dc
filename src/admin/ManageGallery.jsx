@@ -18,7 +18,7 @@ export default function ManageGallery() {
   useEffect(() => {
     const fetchgalleryData = async () => {
       try {
-        const res = await fetch('http://localhost:2030/manage-gallery/fetch')
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/fetch`)
         if (res.ok) {
           const data = await res.json()
           setgalleryData(data.img)

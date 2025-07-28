@@ -9,7 +9,7 @@ export default function Project() {
     useEffect(() => {
         const fetchProject = async () => {
             try {
-                const res=await fetch('http://localhost:2030/manage-project/fetch')
+                const res=await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-project/fetch`)
                 if(res.ok){
                     const data=await res.json()
                     setProjects(data.project )

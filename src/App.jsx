@@ -12,7 +12,7 @@ import ManageProject from './admin/ManageProject.jsx'
 import Login from './admin/authentication/Login.jsx'
 
 import { BrowserRouter, Route, Routes, Outlet, useNavigate } from 'react-router-dom'
-
+import { useState } from 'react';
 function PublicLayout() {
   const navigate = useNavigate();
   return (<>
@@ -32,16 +32,17 @@ function AdminLayout() {
 
 }
 export default function App() {
+ const [isLoggedIn, setIsLoggedIn] = useState(false); // ⬅️ Login state
 
   return (<>
     <BrowserRouter>
 
       <Routes>
 
-        <Route path='/login' element={<Login />} />
+        <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
 
 
-        <Route path='/admin' element={<AdminLayout />} >
+        <Route path='/admin' element={isLoggedIn ? <AdminLayout /> : <Login setIsLoggedIn={setIsLoggedIn} />} >
           <Route path='' element={<ManageGallery />} />
           <Route path='manage-project' element={<ManageProject />} />
         </Route>

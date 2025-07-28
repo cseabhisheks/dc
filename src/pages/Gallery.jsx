@@ -5,7 +5,7 @@ export default function Gallery() {
         console.log("1")
         const fetchimg = async () => {
             try {
-                const res = await fetch('http://localhost:2030/manage-gallery/fetch');
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/fetch`);
                 if (res.ok) {
                     const data = await res.json();
                     setImg(data.img );

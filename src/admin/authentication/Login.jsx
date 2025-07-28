@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import {  useNavigate } from 'react-router-dom'
-export default function Login() {
+import { useNavigate } from 'react-router-dom'
+export default function Login({ setIsLoggedIn }) {
     const [form, setForm] = useState({ un: '', pd: '' })
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const change = (e) => {
         const { name, value } = e.target
         setForm((prev) => ({ ...prev, [name]: value }))
@@ -10,7 +10,8 @@ export default function Login() {
     const submit = async (e) => {
         e.preventDefault()
         try {
-            const res = await fetch('http://localhost:2030/login', {
+            //'http://localhost:2030/login'
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -21,10 +22,12 @@ export default function Login() {
             if (res.ok) {
                 const login = await res.json()
                 console.log(login)
-                if (login.login===true) {
-                   navigate('/admin')
+                if (login.login === true) {
+                    setIsLoggedIn(true)
+                    navigate('/admin')
                 }
-                else{
+                else {
+                    setIsLoggedIn(false)
                     navigate('/login')
                 }
             }
