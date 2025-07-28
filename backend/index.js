@@ -52,7 +52,7 @@ const ls = require('passport-local').Strategy;
 
 app.use(express.json())
 app.use(cors({
-  origin: 'http://localhost:5173', // or wherever your React app runs
+  origin: process.env.FRONTEND, // or wherever your React app runs
   credentials: true// // it is must to store session in cookies
 }));
 

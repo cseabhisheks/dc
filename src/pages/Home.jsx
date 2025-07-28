@@ -17,7 +17,7 @@ export default function Home() {
         e.preventDefault();
 
         try {
-            const response = await fetch(import.meta.env.VITE_MAIL_LINK, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/mail/sent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
