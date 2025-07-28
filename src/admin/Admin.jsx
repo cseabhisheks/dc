@@ -7,11 +7,8 @@ export default function Admin() {
 
     const adminMenu = [
   
-        { title: 'Manage Gallery', link: 'manage-gallery' },
+        { title: 'Manage Gallery', link: '' },
         { title: 'Manage Project', link: 'manage-project' },
- 
-        
-
 
     ]
     return (<>

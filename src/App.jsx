@@ -36,8 +36,6 @@ export default function App() {
   return (<>
     <BrowserRouter>
 
-
-
       <Routes>
 
         <Route path='/login' element={<Login />} />
@@ -54,6 +52,7 @@ export default function App() {
           <Route path='projects' element={<Project />} />
           <Route path='gallery' element={<Gallery />} />
         </Route>
+        
       </Routes>
 
     </BrowserRouter>
