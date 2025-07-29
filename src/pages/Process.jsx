@@ -1,4 +1,4 @@
-import { step, falseCeilingProcess, falseCeilingHighlights } from '../pagesData/processData.JS'
+import { step, falseCeilingProcess, falseCeilingHighlights } from '../pagesData/processData.jS'
 
 export default function Process() {
 
