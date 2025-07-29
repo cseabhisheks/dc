@@ -9,7 +9,7 @@ export default function Footer() {
             {/* text color and bg and px-10 */}
             <div className="grid md:grid-cols-4   gap-4 min-h-[300px] ">
                 <div className=' min-h-[100px] flex flex-col items-center justify-center'>
-                    <h1 className="text-white text-xl">Dilip Construction</h1>
+                    <h1 className="text-white text-xl">Abhishek Construction</h1>
                     <h2 className="text-sm">Premium False Ceiling Contractor</h2>
                 </div>
 
@@ -31,7 +31,7 @@ export default function Footer() {
 
             </div>
             <div className=' text-xs f flex flex-col md:flex-row justify-between items-center'>
-                <span>Copyright :@2025.Dilip Construction.All rights reserved</span>
+                <span>Copyright :@2025.Abhishek Construction.All rights reserved</span>
                 <span>Website Design and Developyment by DevMagnets</span>
             </div>
         </footer >

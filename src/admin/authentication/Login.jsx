@@ -40,7 +40,7 @@ export default function Login({ setIsLoggedIn }) {
         <div className="bg-gray-600  h-[100vh] ">
 
             <div className="bg-primary text-text-primary w-full h-12  text-center flex items-center justify-center text-xl font-semibold tracking-wider border-b-red-500 border-b-2">
-                <span >Dilip Construction</span>
+                <span >Abhishek Construction</span>
             </div>
             <div className="flex  justify-center bg-gray-700 p-5">
                 <form onSubmit={submit} className="mt-5 bg-white w-full md:w-[50%] min-h-[40%] rounded-xl p-5 flex flex-col border-2 border-black items-center justify-between gap-3" >
