@@ -3,7 +3,11 @@ const multer = require('multer')
 const cloudinary = require('cloudinary').v2
 const router = express.Router()
 const galleryModel = require('../model/gallery')
-
+const cors=require('cors')
+router.use(cors({
+  origin: '*',
+  credentials: true, // ❌ This does NOT work with origin: '*'
+}));
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
