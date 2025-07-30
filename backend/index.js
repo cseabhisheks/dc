@@ -71,7 +71,7 @@ app.use(session({
     secret: 'abhiyumi',
     cookie: {
         maxAge: 1000 * 60*30,
-        secure: false // set to true if using HTTPS
+        secure: true // set to true if using HTTPS
     }
 }));
 
