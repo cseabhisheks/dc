@@ -1,218 +1,84 @@
-import { useEffect, useState } from 'react';
+const express = require('express')
+const multer = require('multer')
+const cloudinary = require('cloudinary').v2
+const router = express.Router()
+const galleryModel = require('../model/gallery')
+const cors=require('cors')
 
-export default function ManageGallery() {
-  const [galleryData, setGalleryData] = useState([]);
-  const [refresh, setRefresh] = useState(false);
-  const [modifyBox, setModifyBox] = useState(false);
-  const [modifyData, setModifyData] = useState({ id: '', category: '' });
-  const [uploading, setUploading] = useState(false);
+router.use(cors({
+  origin: `https://abhishekconstructions.vercel.app`,
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-  // Fetch gallery data
-  useEffect(() => {
-    const fetchGalleryData = async () => {
-      try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/fetch`,
-          { credentials: 'include' } // Use this if your backend uses cookies/session
-        );
-        if (res.ok) {
-          const data = await res.json();
-          setGalleryData(data.img);
-        }
-      } catch (err) {
-        alert('Failed to fetch images: ' + err.message);
-      }
-    };
-    fetchGalleryData();
-  }, [refresh]);
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 
-  // Start editing a gallery item
-  const modifyfn = (item) => {
-    setModifyBox(true);
-    setModifyData({ id: item.id, category: item.category });
-  };
+})
+const storage = multer.memoryStorage()
+const upload = multer({ storage })
 
-  // Handle change for category input in edit modal
-  const modifychange = (e) => {
-    const { name, value } = e.target;
-    setModifyData((prev) => ({ ...prev, [name]: value }));
-  };
 
-  // Delete image handler
-  const deleteImage = async (id) => {
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/delete/${id}`,
-        { method: 'DELETE', credentials: 'include' }
-      );
-      if (res.ok) {
-        setRefresh((prev) => !prev);
-        alert('Image deleted successfully');
-      } else {
-        alert('Delete failed');
-      }
-    } catch (err) {
-      alert('Error deleting image: ' + err.message);
-    }
-  };
-
-  // Modify (edit) image category handler
-  const modifygallery = async (e) => {
-    e.preventDefault();
-    const { id, category } = modifyData;
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/patch/${id}`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ category }),
-        }
-      );
-      if (res.ok) {
-        setRefresh((prev) => !prev);
-        setModifyBox(false);
-        alert('Gallery modified successfully');
-      } else {
-        alert('Modify failed');
-      }
-    } catch (err) {
-      alert('Error modifying gallery: ' + err.message);
-    }
-  };
-
-  // Handle file upload via fetch (so you can handle errors and update state/UI)
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    setUploading(true);
-    const form = e.target;
-    const formData = new FormData(form);
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_LINK}/manage-gallery`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          body: formData,
-        }
-      );
-      const data = await res.json();
-      if (res.ok && (!data.err)) {
-        setRefresh((prev) => !prev);
-        alert('Upload successful');
-        form.reset();
-      } else {
-        alert('Upload failed: ' + (data.err || data));
-      }
-    } catch (err) {
-      alert('Error uploading: ' + err.message);
-    }
-    setUploading(false);
-  };
-
-  return (
-    <>
-      {/* Upload form */}
-      <form
-        className="h-[70%] w-[100%] bg-white shadow-[1px_1px_10px_2px_black] rounded-xl border-2 text-2xl border-primary flex flex-col justify-between items-center p-5 md:p-10"
-        encType="multipart/form-data"
-        onSubmit={handleUpload}
-      >
-        <h1 className="font-semibold">Upload Images</h1>
-        <input className="text-xs border-2 border-black" type="file" name="fcDesign" multiple required />
-        <input className="text-xs border-2 border-black p-2 rounded-xl" type="text" name="category" placeholder="category" required />
-        <input
-          className="border-2 border-black rounded-3xl px-6 py-2 bg-primary text-white text-xl cursor-pointer"
-          type="submit"
-          value={uploading ? 'Uploading...' : 'Upload'}
-          disabled={uploading}
-        />
-      </form>
-
-      {/* Gallery Data Table */}
-      <div className="bg-green-200 p-5 mt-5 rounded-xl overflow-scroll">
-        <h1 className="text-xl text-center font-extrabold">History</h1>
-        <table className="mt-5 border-2 border-red-400 w-full bg-primary text-gray-300">
-          <thead>
-            <tr className="border-2 h-[30px]">
-              <th className="border-2 border-text-primary w-40">Date</th>
-              <th className="border-2 border-text-primary">Category</th>
-              <th className="border-2 border-text-primary w-40">Image</th>
-              <th className="border-2 border-text-primary w-40">Edit</th>
-              <th className="border-2 border-text-primary w-40">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {galleryData.length > 0 ? (
-              galleryData.map((item, index) => (
-                <tr key={item.id || index} className="bg-slate-900 text-center">
-                  <td className="border-2 border-text-primary w-40">{item.date || '-'}</td>
-                  <td className="border-2 border-text-primary w-40">{item.category}</td>
-                  <td className="border-2 border-text-primary w-40">
-                    <img src={item.imageUrl} className="max-h-32 mx-auto" alt="Gallery" />
-                  </td>
-                  <td
-                    onClick={() => modifyfn(item)}
-                    className="border-2 border-text-primary w-20 text-blue-500 hover:underline cursor-pointer"
-                  >
-                    Edit
-                  </td>
-                  <td
-                    onClick={() => deleteImage(item.id)}
-                    className="border-2 border-text-primary w-20 text-red-500 hover:underline cursor-pointer"
-                  >
-                    Delete
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={5} className="text-gray-100 text-center">
-                  No images found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Edit Modal */}
-      {modifyBox && (
-        <form onSubmit={modifygallery} className="flex bg-green-300 flex-col justify-evenly items-center absolute p-5 top-20 w-[70%] border-2 border-black rounded-xl h-[300px]">
-          <h1 className="text-center text-xl font-semibold">Modify Gallery</h1>
-          <label htmlFor="category" className="p-2">
-            <span>Category</span>
-            <input
-              type="text"
-              name="category"
-              placeholder="New Category"
-              id="category"
-              className="pl-2 ml-2 border-2 border-black"
-              onChange={modifychange}
-              value={modifyData.category}
-              required
-            />
-          </label>
-          <div className="flex gap-4 mt-4">
-            <button
-              type="button"
-              onClick={() => setModifyBox(false)}
-              className="border-2 p-2 rounded-xl bg-gray-300 border-gray-500 w-[50%]"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="border-2 p-2 rounded-xl bg-primary text-text-primary border-gray-500 w-[50%]"
-            >
-              Change Category
-            </button>
-          </div>
-        </form>
-      )}
-    </>
-  );
+function uploadToCloudinary(buffer) {
+    return new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream({ resource_type: 'image' }, (err, result) => {
+            if (err) return reject(err)
+            resolve({
+                url: result.secure_url,
+                id: result.public_id
+            })
+        }).end(buffer)
+    })
 }
+
+router.post('/', upload.array('fcDesign', 10), async (req, res) => {
+    try {
+        if (req.files.length == 0) {
+            res.json('you didnt select any pic to upload,please choose atleast one to upload')
+        }
+        for (const file of req.files) {
+            const uploadedFile = await uploadToCloudinary(file.buffer)
+            await galleryModel.create({
+                imageUrl: uploadedFile.url,
+                id: uploadedFile.id,
+                category: req.body.category
+            })
+
+        }
+        res.redirect(`${process.env.FRONTEND}/admin`)
+    }
+    catch (err) {
+        res.json({ 'err': err.message })
+    }
+
+})
+router.get('/fetch', async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    const g = await galleryModel.find()
+    res.json({ img: g })
+})
+router.delete('/delete:id', async (req, res) => {
+    const id = req.params.id
+    const user = await galleryModel.deleteOne({ id: id })
+    cloudinary.uploader.destroy(id, (error, result) => {
+        if (error) {
+            // Handle error (not found, credentials, etc.)
+            console.error('Delete failed', error);
+        } else {
+            console.log('Delete result:', result);
+        }
+    });
+    res.json({ message: 'Image Deleted Sucessfully' })
+})
+router.patch('/patch:id', async (req, res) => {
+    const p = await galleryModel.updateOne({ id: req.params.id }, { category: req.body.category })
+    res.json({ message: 'category modified succesfully' })
+})
+module.exports = router
+
+
+
