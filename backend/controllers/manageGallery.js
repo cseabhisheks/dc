@@ -35,8 +35,8 @@ router.post('/', upload.array('fcDesign', 10), async (req, res) => {
             const uploadedFile = await uploadToCloudinary(file.buffer)
             await galleryModel.create({
                 imageUrl: uploadedFile.url,
-                id:uploadedFile.id,
-                category:req.body.category
+                id: uploadedFile.id,
+                category: req.body.category
             })
 
         }
@@ -48,27 +48,29 @@ router.post('/', upload.array('fcDesign', 10), async (req, res) => {
 
 })
 router.get('/fetch', async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
     const g = await galleryModel.find()
     res.json({ img: g })
 })
 router.delete('/delete:id', async (req, res) => {
-    const id=req.params.id
-    const user = await galleryModel.deleteOne({id: id})
-    cloudinary.uploader.destroy(id,  (error, result) => {
+    const id = req.params.id
+    const user = await galleryModel.deleteOne({ id: id })
+    cloudinary.uploader.destroy(id, (error, result) => {
         if (error) {
             // Handle error (not found, credentials, etc.)
             console.error('Delete failed', error);
         } else {
-            console.log('Delete result:', result); 
+            console.log('Delete result:', result);
         }
     });
     res.json({ message: 'Image Deleted Sucessfully' })
 })
-router.patch('/patch:id',async(req,res)=>{
-    const p=await galleryModel.updateOne({id:req.params.id},{category:req.body.category})
-    res.json({message:'category modified succesfully'})
+router.patch('/patch:id', async (req, res) => {
+    const p = await galleryModel.updateOne({ id: req.params.id }, { category: req.body.category })
+    res.json({ message: 'category modified succesfully' })
 })
-module.exports = router 
+module.exports = router
 
 
 
