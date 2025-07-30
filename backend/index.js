@@ -20,8 +20,10 @@ const app = express()
 const PORT = process.env.PORT
 
 app.use(cors({
-  origin: process.env.FRONTEND, // or wherever your React app runs
-  credentials: true// // it is must to store session in cookies
+  origin: process.env.FRONTEND,
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json())
