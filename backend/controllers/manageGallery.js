@@ -40,7 +40,7 @@ router.post('/', upload.array('fcDesign', 10), async (req, res) => {
             })
 
         }
-        res.redirect('http://localhost:5173/admin')
+        res.redirect(`${process.env.FRONTEND}/admin`)
     }
     catch (err) {
         res.json({ 'err': err.message })
