@@ -66,7 +66,7 @@ app.use(session({
     saveUninitialized: false,
     secret: 'abhiyumi',
     cookie: {
-        maxAge: 1000 * 60,
+        maxAge: 1000 * 60*30,
         secure: false // set to true if using HTTPS
     }
 }));

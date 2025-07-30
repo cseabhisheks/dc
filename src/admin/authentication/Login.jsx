@@ -10,7 +10,6 @@ export default function Login({ setIsLoggedIn }) {
     const submit = async (e) => {
         e.preventDefault()
         try {
-            //'http://localhost:2030/login'
             const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/login`, {
                 method: 'POST',
                 headers: {
