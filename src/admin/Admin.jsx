@@ -20,7 +20,7 @@ export default function Admin() {
                     isMenubar && (
                         <div className=" absolute md:static bg-primary text-text-primary  w-40 h-full flex flex-col justify-evenly items-center z-[1]">
                             <h1 className="text-xl font-semibold tracking-[1px]">
-                                <NavLink to="">Admin Panel</NavLink>
+                                <NavLink to="">Admin Panels</NavLink>
                             </h1>
                             <ul className=" text-center capitalize  h-[80%]  flex flex-col justify-evenly">
                                 {
