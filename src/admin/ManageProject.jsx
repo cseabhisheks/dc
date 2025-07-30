@@ -32,7 +32,7 @@ export default function ManageProject() {
 
   const deleteProject = async (cid) => {
     try {
-      const res = await fetch(`http://localhost:2030/manage-project/delete${cid}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-project/delete${cid}`, {
         method: 'DELETE'
       })
       if (res.ok) {
@@ -49,7 +49,7 @@ const modifyProject = async (e) => {
 
   const { cid, siteLocation } = modifyData
   try {
-    const res = await fetch(`http://localhost:2030/manage-project/patch${cid}`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-project/patch${cid}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'

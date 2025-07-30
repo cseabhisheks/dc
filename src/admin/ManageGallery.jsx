@@ -33,7 +33,7 @@ export default function ManageGallery() {
 
   const deleteImage = async (id) => {
     try {
-      const res = await fetch(`http://localhost:2030/manage-gallery/delete${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/delete${id}`, {
         method: 'DELETE'
       })
       if (res.ok) {
@@ -50,7 +50,7 @@ export default function ManageGallery() {
 
   const { id, category } = modifyData
   try {
-    const res = await fetch(`http://localhost:2030/manage-gallery/patch${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/patch${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
