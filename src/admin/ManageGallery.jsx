@@ -18,7 +18,7 @@ export default function ManageGallery() {
   useEffect(() => {
     const fetchgalleryData = async () => {
       try {               
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/fetch`)
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/fetch` , {credentials: 'include'})
         if (res.ok) {
           const data = await res.json()
           setgalleryData(data.img)
@@ -34,7 +34,7 @@ export default function ManageGallery() {
   const deleteImage = async (id) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_LINK}/manage-gallery/delete${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',  credentials: 'include',
       })
       if (res.ok) {
         setRefresh(!refresh)
@@ -55,6 +55,7 @@ export default function ManageGallery() {
       headers: {
         'Content-Type': 'application/json'
       },
+        credentials: 'include',
       body: JSON.stringify({category: category }) 
     })
     if (res.ok) {
