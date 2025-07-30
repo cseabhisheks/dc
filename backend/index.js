@@ -1,6 +1,7 @@
 
 // setting env file
 require('dotenv').config({ path: './.env' })
+app.use(express.json())
 
 
 const express = require('express')
@@ -17,7 +18,10 @@ const manageProject=require('./controllers/manageProject')
 // app initialization
 const app = express()
 const PORT = process.env.PORT
-
+app.use(cors({
+  origin: process.env.FRONTEND, // or wherever your React app runs
+  credentials: true// // it is must to store session in cookies
+}));
 
 // connecting db
 mongoose()
@@ -50,11 +54,7 @@ const ls = require('passport-local').Strategy;
 
 
 
-app.use(express.json())
-app.use(cors({
-  origin: process.env.FRONTEND, // or wherever your React app runs
-  credentials: true// // it is must to store session in cookies
-}));
+
 
 
 // Middleware to parse application/x-www-form-urlencoded
