@@ -20,7 +20,7 @@ const app = express()
 const PORT = process.env.PORT
 
 app.use(cors({
-  origin: 'https://acserverw.onrender.com',
+  origin: 'https://abhishekconstructions.vercel.app',
   credentials: true,
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
