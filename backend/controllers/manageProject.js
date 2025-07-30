@@ -6,7 +6,7 @@ const multer = require('multer')
 
 router.use(express.json())
 const cors=require('cors')
-app.use(cors({
+router.use(cors({
   origin: 'https://dc-neon.vercel.app', // ✅ not "*"
   credentials: true                     // ✅ allow cookies or headers
 }));

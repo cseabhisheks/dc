@@ -4,7 +4,7 @@ const cloudinary = require('cloudinary').v2
 const router = express.Router()
 const galleryModel = require('../model/gallery')
 const cors=require('cors')
-app.use(cors({
+router.use(cors({
   origin: 'https://dc-neon.vercel.app', // ✅ not "*"
   credentials: true                     // ✅ allow cookies or headers
 }));
