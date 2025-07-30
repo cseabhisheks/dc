@@ -5,11 +5,7 @@ const cloudinary = require('cloudinary').v2
 const multer = require('multer')
 
 router.use(express.json())
-const cors=require('cors')
-router.use(cors({
-  origin: 'https://dc-neon.vercel.app', // ✅ not "*"
-  credentials: true                     // ✅ allow cookies or headers
-}));
+
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
 
