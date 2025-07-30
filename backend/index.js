@@ -20,9 +20,10 @@ const app = express()
 const PORT = process.env.PORT
 
 app.use(cors({
-  origin: true,
-  credentials: true,
+  origin: '*',
+  credentials: true, // ❌ This does NOT work with origin: '*'
 }));
+
 
 app.use(express.json())
 // connecting db
