@@ -1,7 +1,7 @@
 
 // setting env file
 require('dotenv').config({ path: './.env' })
-app.use(express.json())
+
 
 
 const express = require('express')
@@ -18,11 +18,13 @@ const manageProject=require('./controllers/manageProject')
 // app initialization
 const app = express()
 const PORT = process.env.PORT
+
 app.use(cors({
   origin: process.env.FRONTEND, // or wherever your React app runs
   credentials: true// // it is must to store session in cookies
 }));
 
+app.use(express.json())
 // connecting db
 mongoose()
 
