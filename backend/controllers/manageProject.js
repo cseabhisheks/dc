@@ -6,9 +6,9 @@ const multer = require('multer')
 
 router.use(express.json())
 const cors=require('cors')
-router.use(cors({
-  origin: '*',
-  credentials: true, // ❌ This does NOT work with origin: '*'
+app.use(cors({
+  origin: 'https://dc-neon.vercel.app', // ✅ not "*"
+  credentials: true                     // ✅ allow cookies or headers
 }));
 const storage = multer.memoryStorage()
 const upload = multer({ storage })

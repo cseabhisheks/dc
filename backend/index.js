@@ -20,8 +20,8 @@ const app = express()
 const PORT = process.env.PORT
 
 app.use(cors({
-  origin: '*',
-  credentials: true, // ❌ This does NOT work with origin: '*'
+  origin: 'https://dc-neon.vercel.app', // ✅ not "*"
+  credentials: true                     // ✅ allow cookies or headers
 }));
 
 
