@@ -12,7 +12,7 @@ import ManageProject from './admin/ManageProject.jsx'
 import Login from './admin/authentication/Login.jsx'
 
 import { BrowserRouter, Route, Routes, Outlet, useNavigate } from 'react-router-dom'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 function PublicLayout() {
   const navigate = useNavigate();
   return (<>
@@ -32,18 +32,27 @@ function AdminLayout() {
 
 }
 export default function App() {
- const [isLoggedIn, setIsLoggedIn] = useState(false); // ⬅️ Login state
+   
+
+  // ✅ Check localStorage once when App loads
+  useEffect(() => {
+    const logged = localStorage.getItem('loggedIn')
+    setIsLoggedIn(logged === 'true')
+  }, [])
+
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // ⬅️ Login state
 
   return (<>
     <BrowserRouter>
 
       <Routes>
 
-        <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
+        <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
 
 
         <Route path='/admin' element={isLoggedIn ? <AdminLayout /> : <Login setIsLoggedIn={setIsLoggedIn} />} >
-          <Route path='' element={<ManageGallery />} />
+          <Route path='manage-gallery' element={<ManageGallery />} />
           <Route path='manage-project' element={<ManageProject />} />
         </Route>
 
@@ -53,7 +62,7 @@ export default function App() {
           <Route path='projects' element={<Project />} />
           <Route path='gallery' element={<Gallery />} />
         </Route>
-        
+
       </Routes>
 
     </BrowserRouter>

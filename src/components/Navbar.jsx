@@ -37,11 +37,9 @@ export default function Navbar() {
 
             {isMenuClicked && (
                 <ul className="left-0 absolute top-12 w-full gap-8 py-5 bg-gray-800 text-text-primary backdrop-blur-[7px] flex flex-col items-center">
-                    {navData.map((item, index) => {
-                        return (<>
-                            <li onClick={handleMenuBar} key={index}><NavLink to={item.link}>{item.title}</NavLink></li>
-                        </>)
-                    })}
+                    {navData.map((item, index) => (
+                        <li onClick={handleMenuBar} key={index}><NavLink to={item.link}>{item.title}</NavLink></li>
+                    ))}
                 </ul>
             )}
 

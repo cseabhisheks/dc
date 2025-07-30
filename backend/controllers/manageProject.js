@@ -36,7 +36,7 @@ router.post('/', upload.array('fcProject', 10), async (req, res) => {
                 cid: uploadedFile.id
             })
         }
-        res.redirect(`${process.env.FRONTEND}/admin`)
+        res.redirect(`${process.env.FRONTEND}/admin/manage-project`)
     } catch (err) {
         res.json('err', err)
     }

@@ -3,14 +3,7 @@ const multer = require('multer')
 const cloudinary = require('cloudinary').v2
 const router = express.Router()
 const galleryModel = require('../model/gallery')
-const cors=require('cors')
 
-router.use(cors({
-  origin: `https://abhishekconstructions.vercel.app`,
-  credentials: true,
-  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -48,7 +41,7 @@ router.post('/', upload.array('fcDesign', 10), async (req, res) => {
             })
 
         }
-        res.redirect(`${process.env.FRONTEND}/admin`)
+        res.redirect(`${process.env.FRONTEND}/admin/manage-gallery`)
     }
     catch (err) {
         res.json({ 'err': err.message })
@@ -56,8 +49,6 @@ router.post('/', upload.array('fcDesign', 10), async (req, res) => {
 
 })
 router.get('/fetch', async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND);
-    res.setHeader("Access-Control-Allow-Credentials", "true");
     const g = await galleryModel.find()
     res.json({ img: g })
 })

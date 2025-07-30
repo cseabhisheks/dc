@@ -68,7 +68,7 @@ export default function ManageGallery() {
   }
 }
   return (<>
-    <form className="h-[70%] w-[100%] bg-white shadow-[1px_1px_10px_2px_black] rounded-xl border-2 text-2xl border-primary  flex flex-col justify-between items-center p-5 md:p-10 " action="http://localhost:2030/manage-gallery" method='POST' encType="multipart/form-data">
+    <form className="h-[70%] w-[100%] bg-white shadow-[1px_1px_10px_2px_black] rounded-xl border-2 text-2xl border-primary  flex flex-col justify-between items-center p-5 md:p-10 " action={`${import.meta.env.VITE_BACKEND_LINK}/manage-gallery`} method='POST' encType="multipart/form-data">
       <h1 className=" font-semibold ">Upload Images</h1>
       <input className="text-xs border-2 border-black" type="file" name="fcDesign" multiple />
       <input className="text-xs border-2 border-black p-2 rounded-xl" type="text" name="category" placeholder='category' />

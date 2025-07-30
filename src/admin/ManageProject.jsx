@@ -70,7 +70,7 @@ const modifyProject = async (e) => {
 
 
   return (<>
-    <form className="h-[70%] w-[100%] bg-white shadow-[1px_1px_10px_2px_black] rounded-xl border-2 text-2xl border-primary  flex flex-col justify-between items-center p-5 md:p-10 " action="http://localhost:2030/manage-project" method='POST' encType="multipart/form-data">
+    <form className="h-[70%] w-[100%] bg-white shadow-[1px_1px_10px_2px_black] rounded-xl border-2 text-2xl border-primary  flex flex-col justify-between items-center p-5 md:p-10 " action={`${import.meta.env.VITE_BACKEND_LINK}/manage-project`}  method='POST' encType="multipart/form-data">
       <h1 className=" font-semibold ">Projects</h1>
       <input required className="text-xs border-2 file:rounded-xl file:hover:bg-gray-500 file:p-1 border-black  rounded-xl cursor-pointer " type="file" name="fcProject" multiple />
       <input type="text" name="siteLocation" required className="text-xs border-2 border-black p-2 rounded-xl" placeholder="address" />

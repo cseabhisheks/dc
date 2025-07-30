@@ -22,12 +22,14 @@ export default function Login({ setIsLoggedIn }) {
                 const login = await res.json()
                 console.log(login)
                 if (login.login === true) {
-                    setIsLoggedIn(true)
-                    navigate('/admin')
+                    localStorage.setItem('loggedIn', 'true'); // ✅ set here only
+                    setIsLoggedIn(true);
+                    navigate('/admin/manage-gallery');
                 }
                 else {
-                    setIsLoggedIn(false)
-                    navigate('/login')
+                    localStorage.setItem('loggedIn', 'false'); // ✅ set here only
+                    setIsLoggedIn(false);
+                    navigate('/login');
                 }
             }
         } catch (err) {

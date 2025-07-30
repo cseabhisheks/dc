@@ -20,10 +20,8 @@ const app = express()
 const PORT = process.env.PORT
 
 app.use(cors({
-  origin: `https://abhishekconstructions.vercel.app`,
+  origin: process.env.FRONTEND,
   credentials: true,
-  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json())
